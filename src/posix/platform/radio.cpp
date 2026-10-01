@@ -518,6 +518,12 @@ otError otPlatRadioSetTransmitPower(otInstance *aInstance, int8_t aPower)
     return GetRadioSpinel().SetTransmitPower(aPower);
 }
 
+void otPlatRadioFactoryReset(otInstance *aInstance)
+{
+    OT_UNUSED_VARIABLE(aInstance);
+    GetRadioSpinel().FactoryReset();
+}
+
 otError otPlatRadioGetCcaEnergyDetectThreshold(otInstance *aInstance, int8_t *aThreshold)
 {
     OT_UNUSED_VARIABLE(aInstance);

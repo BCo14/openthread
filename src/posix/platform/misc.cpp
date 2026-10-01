@@ -95,3 +95,8 @@ otPlatMcuPowerState otPlatGetMcuPowerState(otInstance *aInstance)
 
     return gPlatMcuPowerState;
 }
+
+// Default weak implementation for platforms that do not need to reset
+// radio properties on factory reset (e.g., NCP/bare-metal where the
+// hardware reset already restores all radio defaults).
+OT_TOOL_WEAK void otPlatRadioFactoryReset(otInstance *aInstance) { OT_UNUSED_VARIABLE(aInstance); }

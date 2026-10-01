@@ -175,6 +175,15 @@ public:
      * Deinitialize this radio transceiver.
      */
     void Deinit(void);
+    /**
+     * Resets all user-configured radio properties to hardware defaults by
+     * pre-loading default values into the host cache and calling
+     * RestoreProperties().  Any property added to RestoreProperties() in the
+     * future is automatically covered without changing this function.
+     *
+     */
+    void FactoryReset(void);
+
 
     /**
      * Gets the status of promiscuous mode.

@@ -617,6 +617,22 @@ otError otPlatRadioGetTransmitPower(otInstance *aInstance, int8_t *aPower);
  * @retval OT_ERROR_NOT_IMPLEMENTED  Transmit power configuration via dBm is not implemented.
  */
 otError otPlatRadioSetTransmitPower(otInstance *aInstance, int8_t aPower);
+/**
+ * Resets all user-configured radio properties to their hardware defaults.
+ *
+ * This function is called during a factory reset, before otPlatReset(), to
+ * ensure that RCP firmware which persists radio properties in NVM stores the
+ * hardware defaults rather than the previous user configuration.
+ *
+ * Platforms where a hardware reset already restores all radio defaults (e.g.
+ * NCP/bare-metal) may leave this function as a no-op.  The default weak
+ * implementation in misc.cpp does nothing.
+ *
+ * @param[in] aInstance  The OpenThread instance structure.
+ *
+ */
+void otPlatRadioFactoryReset(otInstance *aInstance);
+
 
 /**
  * Get the radio's CCA ED threshold in dBm measured at antenna connector per IEEE 802.15.4 - 2015 section 10.1.4.

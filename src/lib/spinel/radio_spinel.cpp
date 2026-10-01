@@ -318,6 +318,40 @@ void RadioSpinel::Deinit(void)
     new (this) RadioSpinel();
 }
 
+void RadioSpinel::FactoryReset(void)
+{
+    // Push factory defaults for all user-configurable radio properties
+    // to the RCP before the platform reset.  This ensures that RCP
+    // firmware which persists these values in NVM stores the defaults
+    // rather than the previous user configuration.
+    //
+    // The approach pre-loads the hardware-default values into the host
+    // cache and then calls RestoreProperties().  This guarantees that
+    // any new property added to RestoreProperties() in the future is
+    // automatically covered here without requiring changes to this
+    // function.
+
+#if OPENTHREAD_SPINEL_CONFIG_RCP_RESTORATION_MAX_COUNT > 0
+    mTransmitPower               = 0;
+    mTransmitPowerSet            = true;
+    mCcaEnergyDetectThreshold    = 0;
+    mCcaEnergyDetectThresholdSet = true;
+    mCoexEnabled                 = false;
+    mCoexEnabledSet              = true;
+    mFemLnaGain                  = 0;
+    mFemLnaGainSet               = true;
+
+#if OPENTHREAD_POSIX_CONFIG_MAX_POWER_TABLE_ENABLE
+    for (uint8_t channel = Radio::kChannelMin; channel <= Radio::kChannelMax; channel++)
+    {
+        mMaxPowerTable.SetTransmitPower(channel, OT_RADIO_POWER_INVALID);
+    }
+#endif // OPENTHREAD_POSIX_CONFIG_MAX_POWER_TABLE_ENABLE
+
+    RestoreProperties();
+#endif // OPENTHREAD_SPINEL_CONFIG_RCP_RESTORATION_MAX_COUNT > 0
+}
+
 void RadioSpinel::HandleNotification(const uint8_t *aFrame, uint16_t aLength, bool &aShouldSaveFrame)
 {
     spinel_prop_key_t key;
